@@ -1,30 +1,43 @@
 package com.arctouch.codechallenge.home
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.View
 import com.arctouch.codechallenge.R
-import com.arctouch.codechallenge.api.TmdbApi
 import com.arctouch.codechallenge.base.BaseActivity
-import com.arctouch.codechallenge.data.Cache
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.arctouch.codechallenge.databinding.HomeActivityBinding
+import com.arctouch.codechallenge.di.injector
 import kotlinx.android.synthetic.main.home_activity.*
 
 class HomeActivity : BaseActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.home_activity)
+    private val viewModel by lazy {
+        ViewModelProviders.of(this, injector.injectHomeViewModel()).get(HomeViewModel::class.java)
+    }
 
-        api.upcomingMovies(TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE, 1, TmdbApi.DEFAULT_REGION)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                val moviesWithGenres = it.results.map { movie ->
-                    movie.copy(genres = Cache.genres.filter { movie.genreIds?.contains(it.id) == true })
-                }
+    private lateinit var binding: HomeActivityBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        super.onCreate(savedInstanceState)
+
+        initBinding()
+    }
+
+    private fun initBinding() {
+        binding = DataBindingUtil.setContentView(this, R.layout.home_activity)
+        binding.viewModel = viewModel
+        observeViewModel(viewModel)
+    }
+
+    private fun observeViewModel(viewModel: HomeViewModel) {
+        viewModel.movies.observe(this, Observer {
+            it?.let { moviesWithGenres ->
                 recyclerView.adapter = HomeAdapter(moviesWithGenres)
                 progressBar.visibility = View.GONE
             }
+        })
     }
 }
