@@ -2,9 +2,9 @@ package com.arctouch.codechallenge.di.component
 
 import android.content.Context
 import com.arctouch.codechallenge.MoviesApplication
+import com.arctouch.codechallenge.detail.DetailViewModel
 import com.arctouch.codechallenge.di.ViewModelFactory
 import com.arctouch.codechallenge.di.module.AppModule
-import com.arctouch.codechallenge.home.HomeActivity
 import com.arctouch.codechallenge.home.HomeViewModel
 import dagger.BindsInstance
 import dagger.Component
@@ -23,8 +23,7 @@ interface AppComponent {
     }
 
     fun inject(moviesApplication: MoviesApplication)
-//    fun inject(activity: HomeActivity)
-
 
     fun injectHomeViewModel(): ViewModelFactory<HomeViewModel>
+    fun injectDetailViewModel(): ViewModelFactory<DetailViewModel>
 }
