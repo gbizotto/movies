@@ -18,8 +18,8 @@ data class Movie(
     val title: String,
     val overview: String?,
     val genres: List<Genre>?,
-    @Json(name = "genre_ids") val genreIds: List<Int>?,
-    @Json(name = "poster_path") val posterPath: String?,
-    @Json(name = "backdrop_path") val backdropPath: String?,
-    @Json(name = "release_date") val releaseDate: String?
+    @field:Json(name = "genre_ids") val genreIds: List<Int>?,
+    @field:Json(name = "poster_path") val posterPath: String?,
+    @field:Json(name = "backdrop_path") val backdropPath: String?,
+    @field:Json(name = "release_date") val releaseDate: String?
 )
