@@ -1,7 +1,6 @@
 package com.arctouch.codechallenge.detail
 
 import android.databinding.ObservableField
-import android.util.Log
 import com.arctouch.codechallenge.api.TmdbApi
 import com.arctouch.codechallenge.base.BaseViewModel
 import com.arctouch.codechallenge.model.Genre
@@ -28,7 +27,6 @@ class DetailViewModel @Inject constructor(private val api: TmdbApi, private val 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    Log.v(DetailViewModel::class.java.simpleName, "movie = $it")
                     prepareData(it)
                 }
     }
