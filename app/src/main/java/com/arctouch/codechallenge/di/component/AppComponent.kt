@@ -19,10 +19,10 @@ interface AppComponent {
         @BindsInstance
         fun applicationContext(applicationContext: Context): Builder
 
+        fun appModule(appModule: AppModule): Builder
+
         fun build(): AppComponent
     }
-
-    fun inject(moviesApplication: MoviesApplication)
 
     fun injectHomeViewModel(): ViewModelFactory<HomeViewModel>
     fun injectDetailViewModel(): ViewModelFactory<DetailViewModel>

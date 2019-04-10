@@ -1,5 +1,8 @@
 package com.arctouch.codechallenge.di.module
 
+import com.arctouch.codechallenge.BuildConfig
+import com.arctouch.codechallenge.MoviesApplication
+import com.arctouch.codechallenge.R
 import com.arctouch.codechallenge.api.TmdbApi
 import com.arctouch.codechallenge.util.MovieImageUrlBuilder
 import dagger.Module
@@ -12,39 +15,23 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @Module
-object AppModule {
+class AppModule(private val application: MoviesApplication) {
 
-//    @JvmStatic
-//    @Provides
-//    @Singleton
-//    fun provideApi(application: MoviesApplication): TmdbApi {
-//        return Retrofit.Builder()
-//                .baseUrl(application.getString(R.string.tmdb_base_url))
-//                .client(OkHttpClient.Builder().build())
-//                .addConverterFactory(MoshiConverterFactory.create())
-//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-//                .build()
-//                .create(TmdbApi::class.java)
-//    }
-
-
-    @JvmStatic
     @Provides
     @Singleton
     fun provideApi(): TmdbApi {
         val clientBuilder = OkHttpClient.Builder()
+        if (BuildConfig.BUILD_TYPE == "debug"){
+            val loggingInterceptor = HttpLoggingInterceptor()
+            // set your desired log level
+            loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
-        val loggingInterceptor = HttpLoggingInterceptor()
-
-        // set your desired log level
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-
-        // add logging as last interceptor
-        clientBuilder.addInterceptor(loggingInterceptor)
-
+            // add logging as last interceptor
+            clientBuilder.addInterceptor(loggingInterceptor)
+        }
 
         return Retrofit.Builder()
-                .baseUrl("https://api.themoviedb.org/3/")
+                .baseUrl(application.getString(R.string.tmdb_base_url))
                 .client(clientBuilder.build())
                 .addConverterFactory(MoshiConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -52,7 +39,6 @@ object AppModule {
                 .create(TmdbApi::class.java)
     }
 
-    @JvmStatic
     @Provides
     @Singleton
     fun provideMovieImageUrlBuilder(): MovieImageUrlBuilder {
