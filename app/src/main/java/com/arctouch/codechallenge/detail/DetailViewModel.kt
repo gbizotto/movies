@@ -37,8 +37,8 @@ class DetailViewModel @Inject constructor(private val api: TmdbApi, private val 
         title.set(movie.title)
         overview.set(movie.overview)
 //        releaseDate.set(formatDate(movie.releaseDate))
+        releaseDate.set(movie.releaseDate)
         genres.set(buildGenres(movie.genres))
-
         backdrop.set(movie.backdropPath?.let { movieImageUrlBuilder.buildPosterUrl(it) })
         poster.set(movie.posterPath?.let { movieImageUrlBuilder.buildPosterUrl(it) })
     }
