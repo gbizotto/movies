@@ -24,6 +24,9 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initBinding()
+
+
+        resources.configuration.locales[0]
     }
 
     private fun initBinding() {

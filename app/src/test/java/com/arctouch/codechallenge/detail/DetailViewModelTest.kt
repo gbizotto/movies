@@ -1,8 +1,8 @@
 package com.arctouch.codechallenge.detail
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import com.arctouch.codechallenge.api.TmdbApi
 import com.arctouch.codechallenge.model.Movie
+import com.arctouch.codechallenge.usecase.MovieDetailUseCase
 import com.arctouch.codechallenge.util.MovieImageUrlBuilder
 import io.mockk.every
 import io.mockk.mockk
@@ -19,9 +19,8 @@ import org.junit.Test
 import java.util.concurrent.Executor
 
 class DetailViewModelTest {
-    private val api = mockk<TmdbApi>(relaxed = true)
+    private val useCase = mockk<MovieDetailUseCase>(relaxed = true)
     private val imageBuilder = mockk<MovieImageUrlBuilder>(relaxed = true)
-    private val mockedApiKey = "test"
 
     private lateinit var viewModel: DetailViewModel
 
@@ -45,14 +44,14 @@ class DetailViewModelTest {
         mockMovieDetailsApi()
         mockImageBuilder()
 
-        viewModel = DetailViewModel(api, imageBuilder, mockedApiKey)
+        viewModel = DetailViewModel(imageBuilder, useCase)
     }
 
     @Test
     fun whenMovieIdIsReady_mustSearchForMovieDetails() {
         viewModel.init(1)
 
-        verify { api.movie(1, mockedApiKey, any()) }
+        verify { useCase.getMovieDetails(1) }
 
         Assert.assertEquals("test1", viewModel.title.get())
         Assert.assertEquals("test2", viewModel.overview.get())
@@ -62,7 +61,7 @@ class DetailViewModelTest {
     }
 
     private fun mockMovieDetailsApi() {
-        every { api.movie(any(), any(), any()) }.returns(Observable.just(mockMovieDetails()))
+        every { useCase.getMovieDetails(any()) }.returns(Observable.just(mockMovieDetails()))
     }
 
     private fun mockMovieDetails(): Movie {

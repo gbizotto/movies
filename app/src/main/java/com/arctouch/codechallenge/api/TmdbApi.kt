@@ -10,11 +10,6 @@ import retrofit2.http.Query
 
 interface TmdbApi {
 
-    companion object {
-        const val DEFAULT_LANGUAGE = "pt-BR"
-        const val DEFAULT_REGION = "BR"
-    }
-
     @GET("genre/movie/list")
     fun genres(
             @Query("api_key") apiKey: String,

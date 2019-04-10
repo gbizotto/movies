@@ -1,10 +1,11 @@
 package com.arctouch.codechallenge.home
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import com.arctouch.codechallenge.api.TmdbApi
 import com.arctouch.codechallenge.model.GenreResponse
 import com.arctouch.codechallenge.model.Movie
 import com.arctouch.codechallenge.model.UpcomingMoviesResponse
+import com.arctouch.codechallenge.usecase.GenresUseCase
+import com.arctouch.codechallenge.usecase.UpcomingMoviesUseCase
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -19,11 +20,10 @@ import org.junit.Rule
 import org.junit.Test
 import java.util.concurrent.Executor
 
-
 class HomeViewModelTest {
 
-    private val api = mockk<TmdbApi>(relaxed = true)
-    private val mockedApiKey = "test"
+    private val genreUseCase = mockk<GenresUseCase>(relaxed = true)
+    private val upcomingMoviesUseCase = mockk<UpcomingMoviesUseCase>(relaxed = true)
 
     private lateinit var viewModel: HomeViewModel
 
@@ -46,19 +46,19 @@ class HomeViewModelTest {
 
         mockGenres()
         mockUpcomingMovies()
-        viewModel = HomeViewModel(api, mockedApiKey)
+        viewModel = HomeViewModel(genreUseCase, upcomingMoviesUseCase)
     }
 
     @Test
     fun onInit_mustLoadUpcomingMovies() {
-        verify { api.genres(mockedApiKey, any()) }
-        verify { api.upcomingMovies(mockedApiKey, any(), any(), any()) }
+        verify { genreUseCase.listGenres() }
+        verify { upcomingMoviesUseCase.listUpcomingMovies() }
 
         Assert.assertEquals(mockMovies(), viewModel.movies.value)
     }
 
     private fun mockUpcomingMovies() {
-        every { api.upcomingMovies(any(), any(), any(), any()) }.returns(Observable.just(mockUpcomingMoviesResponse()))
+        every { upcomingMoviesUseCase.listUpcomingMovies() }.returns(Observable.just(mockUpcomingMoviesResponse()))
     }
 
     private fun mockUpcomingMoviesResponse(): UpcomingMoviesResponse {
@@ -68,14 +68,14 @@ class HomeViewModelTest {
                 1)
     }
 
-    private fun mockMovies() : List<Movie> {
+    private fun mockMovies(): List<Movie> {
         return listOf(
                 Movie(1, "test1", null, emptyList())
         )
     }
 
     private fun mockGenres() {
-        every { api.genres(any(), any()) }.returns(Observable.just(mockGenresResponse()))
+        every { genreUseCase.listGenres() }.returns(Observable.just(mockGenresResponse()))
     }
 
     private fun mockGenresResponse(): GenreResponse {

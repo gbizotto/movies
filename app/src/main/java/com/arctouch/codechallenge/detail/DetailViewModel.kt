@@ -1,18 +1,17 @@
 package com.arctouch.codechallenge.detail
 
 import android.databinding.ObservableField
-import com.arctouch.codechallenge.api.TmdbApi
 import com.arctouch.codechallenge.base.BaseViewModel
 import com.arctouch.codechallenge.model.Genre
 import com.arctouch.codechallenge.model.Movie
+import com.arctouch.codechallenge.usecase.MovieDetailUseCase
 import com.arctouch.codechallenge.util.MovieImageUrlBuilder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.text.SimpleDateFormat
 import javax.inject.Inject
-import javax.inject.Named
 
-class DetailViewModel @Inject constructor(private val api: TmdbApi, private val movieImageUrlBuilder: MovieImageUrlBuilder, @Named("apikey") private val apiKey: String) : BaseViewModel() {
+class DetailViewModel @Inject constructor(private val movieImageUrlBuilder: MovieImageUrlBuilder, private val movieDetailUseCase: MovieDetailUseCase) : BaseViewModel() {
 
     val backdrop = ObservableField<String>()
     val poster = ObservableField<String>()
@@ -23,8 +22,8 @@ class DetailViewModel @Inject constructor(private val api: TmdbApi, private val 
 
     fun init(movieId: Int) {
 
-        disposable = api
-                .movie(movieId.toLong(), apiKey, TmdbApi.DEFAULT_LANGUAGE)
+        disposable = movieDetailUseCase
+                .getMovieDetails(movieId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {

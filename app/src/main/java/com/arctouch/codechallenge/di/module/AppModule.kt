@@ -1,9 +1,11 @@
 package com.arctouch.codechallenge.di.module
 
+import android.os.Build
 import com.arctouch.codechallenge.BuildConfig
 import com.arctouch.codechallenge.MoviesApplication
 import com.arctouch.codechallenge.R
 import com.arctouch.codechallenge.api.TmdbApi
+import com.arctouch.codechallenge.usecase.GenresUseCase
 import com.arctouch.codechallenge.util.MovieImageUrlBuilder
 import dagger.Module
 import dagger.Provides
@@ -12,6 +14,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.*
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -52,4 +55,15 @@ class AppModule(private val application: MoviesApplication) {
     fun provideApiKey(): String {
         return application.getString(R.string.tmdb_api_key)
     }
+
+    @Provides
+    @Singleton
+    fun provideDefaultLocale(): Locale {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            application.resources.configuration.locales[0]
+        } else {
+            application.resources.configuration.locale
+        }
+    }
+
 }
