@@ -12,6 +12,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -21,7 +22,7 @@ class AppModule(private val application: MoviesApplication) {
     @Singleton
     fun provideApi(): TmdbApi {
         val clientBuilder = OkHttpClient.Builder()
-        if (BuildConfig.BUILD_TYPE == "debug"){
+        if (BuildConfig.BUILD_TYPE == "debug") {
             val loggingInterceptor = HttpLoggingInterceptor()
             // set your desired log level
             loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -41,7 +42,14 @@ class AppModule(private val application: MoviesApplication) {
 
     @Provides
     @Singleton
-    fun provideMovieImageUrlBuilder(): MovieImageUrlBuilder {
-        return MovieImageUrlBuilder()
+    fun provideMovieImageUrlBuilder(@Named("apikey") apiKey: String): MovieImageUrlBuilder {
+        return MovieImageUrlBuilder(apiKey)
+    }
+
+    @Provides
+    @Singleton
+    @Named("apikey")
+    fun provideApiKey(): String {
+        return application.getString(R.string.tmdb_api_key)
     }
 }

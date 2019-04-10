@@ -7,7 +7,6 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.widget.Toast
 import com.arctouch.codechallenge.R
 import com.arctouch.codechallenge.databinding.HomeActivityBinding
 import com.arctouch.codechallenge.detail.DetailActivity
@@ -43,7 +42,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun goToDetails(id: Int) {
-        Toast.makeText(this, "id = $id", Toast.LENGTH_LONG).show()
         val intent = Intent(this, DetailActivity::class.java).apply {
             this.putExtra(movieId, id)
         }
@@ -51,6 +49,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
     companion object {
-        val movieId = "MOVIE_ID"
+        const val movieId = "MOVIE_ID"
     }
 }

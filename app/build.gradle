@@ -22,6 +22,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             resValue "string", "tmdb_base_url", "https://api.themoviedb.org/3/"
+            resValue "string", "tmdb_api_key", "1f54bd990f1cdfb230adb312546d765d"
         }
 
         debug {
@@ -30,6 +31,7 @@ android {
             useProguard false
 
             resValue "string", "tmdb_base_url", "https://api.themoviedb.org/3/"
+            resValue "string", "tmdb_api_key", "1f54bd990f1cdfb230adb312546d765d"
         }
     }
     dataBinding {

@@ -15,7 +15,7 @@ class HomeAdapter(private val movies: List<Movie>, private val clickEvent: (id: 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val movieImageUrlBuilder = MovieImageUrlBuilder()
+        private val movieImageUrlBuilder = MovieImageUrlBuilder("")
 
         fun bind(movie: Movie, clickEvent: (id: Int) -> Unit) {
             itemView.titleTextView.text = movie.title

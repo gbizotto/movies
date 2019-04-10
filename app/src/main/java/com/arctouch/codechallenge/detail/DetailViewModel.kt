@@ -10,8 +10,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.text.SimpleDateFormat
 import javax.inject.Inject
+import javax.inject.Named
 
-class DetailViewModel @Inject constructor(private val api: TmdbApi, private val movieImageUrlBuilder: MovieImageUrlBuilder) : BaseViewModel() {
+class DetailViewModel @Inject constructor(private val api: TmdbApi, private val movieImageUrlBuilder: MovieImageUrlBuilder, @Named("apikey") private val apiKey: String) : BaseViewModel() {
 
     val backdrop = ObservableField<String>()
     val poster = ObservableField<String>()
@@ -23,7 +24,7 @@ class DetailViewModel @Inject constructor(private val api: TmdbApi, private val 
     fun init(movieId: Int) {
 
         disposable = api
-                .movie(movieId.toLong(), TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE)
+                .movie(movieId.toLong(), apiKey, TmdbApi.DEFAULT_LANGUAGE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
@@ -37,7 +38,7 @@ class DetailViewModel @Inject constructor(private val api: TmdbApi, private val 
 //        releaseDate.set(formatDate(movie.releaseDate))
         releaseDate.set(movie.releaseDate)
         genres.set(buildGenres(movie.genres))
-        backdrop.set(movie.backdropPath?.let { movieImageUrlBuilder.buildPosterUrl(it) })
+        backdrop.set(movie.backdropPath?.let { movieImageUrlBuilder.buildBackdropUrl(it) })
         poster.set(movie.posterPath?.let { movieImageUrlBuilder.buildPosterUrl(it) })
     }
 

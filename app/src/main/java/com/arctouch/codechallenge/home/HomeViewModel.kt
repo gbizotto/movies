@@ -9,8 +9,9 @@ import com.arctouch.codechallenge.model.UpcomingMoviesResponse
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
+import javax.inject.Named
 
-class HomeViewModel @Inject constructor(private val api: TmdbApi) : BaseViewModel() {
+class HomeViewModel @Inject constructor(private val api: TmdbApi, @Named("apikey") private val apiKey: String) : BaseViewModel() {
 
     val movies = MutableLiveData<List<Movie>>()
 
@@ -20,7 +21,7 @@ class HomeViewModel @Inject constructor(private val api: TmdbApi) : BaseViewMode
 
     private fun searchGenres() {
         if (Cache.genres.isNullOrEmpty()) {
-            disposable = api.genres(TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE)
+            disposable = api.genres(apiKey, TmdbApi.DEFAULT_LANGUAGE)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
@@ -34,7 +35,7 @@ class HomeViewModel @Inject constructor(private val api: TmdbApi) : BaseViewMode
 
     private fun searchMovies() {
         disposable = api
-                .upcomingMovies(TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE, 1, TmdbApi.DEFAULT_REGION)
+                .upcomingMovies(apiKey, TmdbApi.DEFAULT_LANGUAGE, 1, TmdbApi.DEFAULT_REGION)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
