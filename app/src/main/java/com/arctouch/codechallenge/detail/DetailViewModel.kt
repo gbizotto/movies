@@ -2,7 +2,7 @@ package com.arctouch.codechallenge.detail
 
 import android.databinding.ObservableField
 import com.arctouch.codechallenge.base.BaseViewModel
-import com.arctouch.codechallenge.model.Genre
+import com.arctouch.codechallenge.extensions.formatGenres
 import com.arctouch.codechallenge.model.Movie
 import com.arctouch.codechallenge.usecase.MovieDetailUseCase
 import com.arctouch.codechallenge.util.MovieImageUrlBuilder
@@ -36,7 +36,7 @@ class DetailViewModel @Inject constructor(private val movieImageUrlBuilder: Movi
         overview.set(movie.overview)
 //        releaseDate.set(formatDate(movie.releaseDate))
         releaseDate.set(movie.releaseDate)
-        genres.set(buildGenres(movie.genres))
+        genres.set(movie.formatGenres())
         backdrop.set(movie.backdropPath?.let { movieImageUrlBuilder.buildBackdropUrl(it) })
         poster.set(movie.posterPath?.let { movieImageUrlBuilder.buildPosterUrl(it) })
     }
@@ -47,19 +47,6 @@ class DetailViewModel @Inject constructor(private val movieImageUrlBuilder: Movi
             val formatBackend = SimpleDateFormat("yyyy/MM/dd")
             val sdf = SimpleDateFormat("dd/MM/yyyy")
             sdf.format(formatBackend.parse(it))
-        } ?: run {
-            ""
-        }
-    }
-
-    private fun buildGenres(genres: List<Genre>?): String {
-        return genres?.let {
-            val genre = StringBuilder()
-            it.forEach {
-                genre.append("${it.name} - ")
-            }
-            genre.toString()
-
         } ?: run {
             ""
         }

@@ -6,6 +6,7 @@ import com.arctouch.codechallenge.model.Movie
 import com.arctouch.codechallenge.model.UpcomingMoviesResponse
 import com.arctouch.codechallenge.usecase.GenresUseCase
 import com.arctouch.codechallenge.usecase.UpcomingMoviesUseCase
+import com.arctouch.codechallenge.util.MovieImageUrlBuilder
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -24,6 +25,7 @@ class HomeViewModelTest {
 
     private val genreUseCase = mockk<GenresUseCase>(relaxed = true)
     private val upcomingMoviesUseCase = mockk<UpcomingMoviesUseCase>(relaxed = true)
+    private val mockImageUrlBuilder = mockk<MovieImageUrlBuilder>(relaxed = true)
 
     private lateinit var viewModel: HomeViewModel
 
@@ -46,7 +48,7 @@ class HomeViewModelTest {
 
         mockGenres()
         mockUpcomingMovies()
-        viewModel = HomeViewModel(genreUseCase, upcomingMoviesUseCase)
+        viewModel = HomeViewModel(genreUseCase, upcomingMoviesUseCase, mockImageUrlBuilder)
     }
 
     @Test

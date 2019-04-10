@@ -4,6 +4,7 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class MovieImageUrlBuilder @Inject constructor(@Named("apikey") private val apiKey: String) {
+
     private val posterUrl = "https://image.tmdb.org/t/p/w154"
     private val backdropUrl = "https://image.tmdb.org/t/p/w780"
 

@@ -7,11 +7,16 @@ import com.arctouch.codechallenge.model.Movie
 import com.arctouch.codechallenge.model.UpcomingMoviesResponse
 import com.arctouch.codechallenge.usecase.GenresUseCase
 import com.arctouch.codechallenge.usecase.UpcomingMoviesUseCase
+import com.arctouch.codechallenge.util.MovieImageUrlBuilder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(private val genresUseCase: GenresUseCase, private val upcomingMoviesUseCase: UpcomingMoviesUseCase) : BaseViewModel() {
+class HomeViewModel @Inject constructor(
+        private val genresUseCase: GenresUseCase,
+        private val upcomingMoviesUseCase: UpcomingMoviesUseCase,
+        val movieImageUrlBuilder: MovieImageUrlBuilder
+) : BaseViewModel() {
 
     val movies = MutableLiveData<List<Movie>>()
 

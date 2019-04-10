@@ -24,9 +24,6 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initBinding()
-
-
-        resources.configuration.locales[0]
     }
 
     private fun initBinding() {
@@ -38,7 +35,7 @@ class HomeActivity : AppCompatActivity() {
     private fun observeViewModel(viewModel: HomeViewModel) {
         viewModel.movies.observe(this, Observer {
             it?.let { moviesWithGenres ->
-                recyclerView.adapter = HomeAdapter(moviesWithGenres, ::goToDetails)
+                recyclerView.adapter = HomeAdapter(moviesWithGenres, viewModel.movieImageUrlBuilder, ::goToDetails)
                 progressBar.visibility = View.GONE
             }
         })
