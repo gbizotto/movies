@@ -6,6 +6,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import com.arctouch.codechallenge.R
 import com.arctouch.codechallenge.databinding.HomeActivityBinding
@@ -33,9 +34,14 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel(viewModel: HomeViewModel) {
-        viewModel.movies.observe(this, Observer {
+        viewModel.movieList.observe(this, Observer {
+            Log.v("lalal", "entrou em movieList" )
+        })
+        viewModel.movieList.observe(this, Observer {
             it?.let { moviesWithGenres ->
-                recyclerView.adapter = HomeAdapter(moviesWithGenres, viewModel.movieImageUrlBuilder, ::goToDetails)
+                val adap = HomeAdapter(moviesWithGenres, viewModel.movieImageUrlBuilder, ::goToDetails)
+                adap.submitList(moviesWithGenres)
+//                recyclerView.adapter = HomeAdapter(moviesWithGenres, viewModel.movieImageUrlBuilder, ::goToDetails)
                 progressBar.visibility = View.GONE
             }
         })
