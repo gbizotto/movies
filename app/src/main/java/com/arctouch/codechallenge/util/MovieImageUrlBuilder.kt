@@ -1,17 +1,18 @@
 package com.arctouch.codechallenge.util
 
-import com.arctouch.codechallenge.api.TmdbApi
+import javax.inject.Inject
+import javax.inject.Named
 
-private val POSTER_URL = "https://image.tmdb.org/t/p/w154"
-private val BACKDROP_URL = "https://image.tmdb.org/t/p/w780"
+class MovieImageUrlBuilder @Inject constructor(@Named("apikey") private val apiKey: String) {
 
-class MovieImageUrlBuilder {
+    private val posterUrl = "https://image.tmdb.org/t/p/w154"
+    private val backdropUrl = "https://image.tmdb.org/t/p/w780"
 
     fun buildPosterUrl(posterPath: String): String {
-        return POSTER_URL + posterPath + "?api_key=" + TmdbApi.API_KEY
+        return "$posterUrl$posterPath?api_key=$apiKey"
     }
 
     fun buildBackdropUrl(backdropPath: String): String {
-        return BACKDROP_URL + backdropPath + "?api_key=" + TmdbApi.API_KEY
+        return "$backdropUrl$backdropPath?api_key=$apiKey"
     }
 }

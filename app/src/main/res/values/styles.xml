@@ -6,4 +6,41 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="movie_text">
+        <item name="android:layout_margin">@dimen/movie_details_margin</item>
+    </style>
+
+    <style name="movie_title" parent="movie_text">
+        <item name="android:textSize">@dimen/movie_title_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="movie_genre" parent="movie_text">
+        <item name="android:textSize">@dimen/movie_genre_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="movie_release_date" parent="movie_text">
+        <item name="android:textSize">@dimen/movie_release_date_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="movie_overview" parent="movie_text">
+        <item name="android:textSize">@dimen/movie_overview_size</item>
+        <item name="android:layout_marginBottom">@dimen/divider_margin_vertical</item>
+    </style>
+
+    <style name="divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/divider_height</item>
+        <item name="android:background">@android:color/black</item>
+        <item name="android:layout_marginTop">@dimen/divider_margin_vertical</item>
+        <item name="android:layout_marginBottom">@dimen/divider_margin_vertical</item>
+    </style>
+
+    <style name="movie_poster">
+        <item name="android:layout_marginTop">@dimen/divider_margin_vertical</item>
+        <item name="android:layout_marginEnd">@dimen/movie_details_margin</item>
+    </style>
+
 </resources>
